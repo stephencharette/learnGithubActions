@@ -17,7 +17,7 @@ jobs:
         if: env.USE_NVMRC == 'true'
         run: echo ::set-output name=NVMRC_VERSION::$(cat .nvmrc)
         id: nvm
-      - name: Setup Node.js environment with version 10
+      - name: Setup Node.js environment with version from .nvmrc
         if: env.USE_NVMRC == 'true'
         uses: actions/setup-node@v2.1.4
         with:
