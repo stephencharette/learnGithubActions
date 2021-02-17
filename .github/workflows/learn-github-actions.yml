@@ -5,12 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: 12.16.1
+      USE_ENV_VERSION: true
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Node.js environment
+      - name: Setup Node.js environment with env
+        if: env.USE_ENV_VERSION
         uses: actions/setup-node@v2.1.4
         with:
-          # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
           node-version: ${{ env.NODE_VERSION }}
+      - name: Setup Node.js environment with default
+        if: ${{ !env.USE_ENV_VERSION }}
+        uses: actions/setup-node@v2.1.4    
       - run: npm install -g bats
       - run: bats -v
