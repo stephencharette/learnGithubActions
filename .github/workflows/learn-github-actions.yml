@@ -15,7 +15,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: Read node version from .nvmrc
         if: env.USE_NVMRC == 'true'
-        run: echo '::set-output name=NVMRC_VERSION::$(cat .nvmrc)'
+        run: echo ::set-output name=NVMRC_VERSION::$(cat .nvmrc)
         id: nvm
       - name: Setup Node.js environment with version 10
         if: env.USE_NVMRC == 'true'
