@@ -8,11 +8,6 @@ jobs:
       USE_ENV_VERSION: false
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Node.js environment with env
-        if: ${{ false }}
-        uses: actions/setup-node@v2.1.4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
       - name: Setup Node.js environment with default
         if: ${{ true }}
         uses: actions/setup-node@v2.1.4    
