@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment with env
-        if: env.USE_ENV_VERSION
+        if: ${{ env.USE_ENV_VERSION }}
         uses: actions/setup-node@v2.1.4
         with:
           node-version: ${{ env.NODE_VERSION }}
