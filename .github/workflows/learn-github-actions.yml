@@ -5,18 +5,22 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: '12.16.1'
-      USE_ENV_VERSION: 'false'
+      USE_NVMRC: 'true'
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment with env
-        if: env.USE_ENV_VERSION == 'true'
+        if: env.USE_NVMRC == 'false'
         uses: actions/setup-node@v2.1.4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Read node version from .nvmrc
+        if: env.USE_NVMRC == 'true'
+        run: echo '::set-output name=NVMRC_VERSION::$(cat .nvmrc)'
+        id: nvm
       - name: Setup Node.js environment with version 10
-        if: env.USE_ENV_VERSION == 'false'
+        if: env.USE_NVMRC == 'true'
         uses: actions/setup-node@v2.1.4
         with:
-          node-version: 10
+          node-version: ${{ steps.nvm.outputs.NVMRC_VERSION }}
       - run: npm install -g bats
       - run: bats -v
