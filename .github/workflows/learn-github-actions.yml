@@ -4,17 +4,17 @@ jobs:
   check-bats-version:
     runs-on: ubuntu-latest
     env:
-      NODE_VERSION: 12.16.1
-      USE_ENV_VERSION: false
+      NODE_VERSION: '12.16.1'
+      USE_ENV_VERSION: 'false'
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment with env
-        if: ${{ false }}
+        if: env.USE_ENV_VERSION == 'true'
         uses: actions/setup-node@v2.1.4
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Setup Node.js environment with version 10
-        if: ${{ true }}
+        if: env.USE_ENV_VERSION == 'false'
         uses: actions/setup-node@v2.1.4
         with:
           node-version: 10
