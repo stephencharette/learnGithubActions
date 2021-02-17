@@ -1,0 +1,20 @@
+{
+  "name": "learngithubactions",
+  "version": "1.0.0",
+  "description": "Repo to learn about github actions and play around",
+  "main": "index.js",
+  "scripts": {
+    "hello": "node hello.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jschuman/learnGithubActions.git"
+  },
+  "author": "Jeff Schuman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jschuman/learnGithubActions/issues"
+  },
+  "homepage": "https://github.com/jschuman/learnGithubActions#readme"
+}
