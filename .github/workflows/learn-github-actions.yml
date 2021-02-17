@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: 12.16.1
-      USE_ENV_VERSION: true
+      USE_ENV_VERSION: false
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment with env
