@@ -24,3 +24,5 @@ jobs:
           node-version: ${{ steps.nvm.outputs.NVMRC_VERSION }}
       - run: npm install -g bats
       - run: bats -v
+      - name: Call the Hello World script
+        run: npm run hello
