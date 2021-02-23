@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: tag-latest
 on:
   push:
     branches:
