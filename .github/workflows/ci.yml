@@ -1,7 +1,7 @@
 name: learn-github-actions
 on: [push]
 jobs:
-  check-bats-version:
+  execute-tests:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: '12.16.1'
@@ -22,7 +22,4 @@ jobs:
         uses: actions/setup-node@v2.1.4
         with:
           node-version: ${{ steps.nvm.outputs.NVMRC_VERSION }}
-      - run: npm install -g bats
-      - run: bats -v
-      - name: Call the Hello World script
-        run: npm run hello
+      - run: npm run test
