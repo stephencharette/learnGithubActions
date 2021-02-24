@@ -4,7 +4,7 @@
   "description": "Repo to learn about github actions and play around",
   "main": "index.js",
   "scripts": {
-    "hello": "node hello.js",
+    "hello": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
