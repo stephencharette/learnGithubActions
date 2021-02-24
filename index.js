@@ -1,2 +1,5 @@
-let i = 6;
-console.log("Hello World");
+let hello = () => {
+  console.log("Hello World");
+}
+
+hello();

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "hello": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jschuman/learnGithubActions/issues"
   },
-  "homepage": "https://github.com/jschuman/learnGithubActions#readme"
+  "homepage": "https://github.com/jschuman/learnGithubActions#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
 }
