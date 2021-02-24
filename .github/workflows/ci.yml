@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: ci
 on: [push]
 jobs:
   execute-tests:
@@ -22,4 +22,7 @@ jobs:
         uses: actions/setup-node@v2.1.4
         with:
           node-version: ${{ steps.nvm.outputs.NVMRC_VERSION }}
-      - run: npm run test
+      - name: Install packages
+        run: npm install
+      - name: Execute Tests
+        run: npm run test
