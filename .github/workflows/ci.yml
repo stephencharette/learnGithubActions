@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  execute-tests:
+  test:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: '12.16.1'
@@ -30,7 +30,7 @@ jobs:
       - name: Execute Tests
         run: npm run test
   tag:
-    needs: execute-tests
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
