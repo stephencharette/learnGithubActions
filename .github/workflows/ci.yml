@@ -27,6 +27,7 @@ jobs:
       - name: Execute Tests
         run: npm run test
   tag:
+    needs: execute-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
