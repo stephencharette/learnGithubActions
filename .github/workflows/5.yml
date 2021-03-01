@@ -13,6 +13,6 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: PR Opened
-          body: "Hey!  Someone opened a PR on the $GITHUB_REPOSITORY repo.  Go check it out!"
+          body: Hey!  Someone opened a PR on the ${{github.GITHUB_REPOSITORY}} repo.  Go check it out!
           to: jeff@jeffschuman.com
           from: Jeff Schuman
