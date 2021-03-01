@@ -1,0 +1,16 @@
+name: 2
+on:
+  pull_request:
+jobs:
+  env:
+    DEFAULT_NODE_VERSION: '14'
+  node_setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install packages
+        run: npm install
