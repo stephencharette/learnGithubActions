@@ -1,8 +1,8 @@
-name: 1
+name: 3
 on:
   pull_request:
 jobs:
-  node_setup:
+  execute_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,3 +12,5 @@ jobs:
           node-version: '14'
       - name: Install packages
         run: npm install
+      - name: Run Tests
+        run: npm run test
