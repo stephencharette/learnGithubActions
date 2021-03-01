@@ -2,10 +2,10 @@ name: 2
 on:
   pull_request:
 jobs:
-  env:
-    DEFAULT_NODE_VERSION: '14'
   node_setup:
     runs-on: ubuntu-latest
+    env:
+      DEFAULT_NODE_VERSION: '14'
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment
