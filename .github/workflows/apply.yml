@@ -1,5 +1,9 @@
-name: 'Apply'
+# For more information on automating terraform with GitHub actions: https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 
+name: 'Terraform Apply'
+
+# Always run even if there are no changes to the terraform configurations for the environmnet
+# so other workflows can depend on this workflow completing before starting (Continuous Deployment).
 on:
   push:
     branches:

@@ -1,4 +1,6 @@
-name: 'Plan'
+# For more information on automating terraform with GitHub actions: https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
+
+name: 'Terraform Plan'
 
 on:
   pull_request:
