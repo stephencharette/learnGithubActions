@@ -28,6 +28,8 @@ jobs:
   check_changes:
     needs: success
     runs-on: ubuntu-latest
+    outputs:
+      src:
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v3
@@ -36,6 +38,7 @@ jobs:
         filters: |
           src:
             - 'firstpath/**'
+            - '.github/**'
   set_environment:
     needs: check_changes
     if: needs.check_changes.outputs.src == 'true'
