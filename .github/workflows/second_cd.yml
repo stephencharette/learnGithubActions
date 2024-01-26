@@ -14,13 +14,13 @@ concurrency:
 jobs:
   # Check if the terraform configuration was applied successfully.
   terraform-success:
-    name: 'Terraform Configuration Was Applied'
+    name: 'Terraform Successful'
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - run: echo 'The terraform configuration was applied successfully.'
   terraform-failure:
-    name: 'Terraform Configuration Was Not Applied'
+    name: 'Terraform Unsuccessful'
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
@@ -28,6 +28,7 @@ jobs:
   
   # Exit this workflow if the terraform configuration was applied successfully.
   exit:
+    name: 'Exit'
     needs: terraform-failure
     runs-on: ubuntu-latest
     steps:
