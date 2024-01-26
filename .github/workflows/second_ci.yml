@@ -1,0 +1,12 @@
+name: Second Continuous Integration
+on: 
+  pull_request:
+    paths:
+      - .github/**
+      - secondpath/**
+
+jobs:
+  something:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'second CI done.'
