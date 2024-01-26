@@ -35,7 +35,7 @@ jobs:
             echo "Changes detected in the specified directories."
           else
             echo "No changes detected in the specified directories. Exiting early."
-            exit 78  # Use a non-zero exit code to indicate a successful early exit
+            exit 0
           fi
   set_environment:
     needs: check_changes
