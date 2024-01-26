@@ -1,8 +1,6 @@
-# For more information on automating terraform with GitHub actions: https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
-
 name: 'Terraform Apply'
 
-# Always run even if there are no changes to the terraform configurations for the environmnet
+# Always start workflow even if there are no changes to the terraform configurations for the environmnet
 # so other workflows can depend on this workflow completing before starting (Continuous Deployment).
 on:
   push:
@@ -10,6 +8,9 @@ on:
       - develop
 
 jobs:
+  # Check if there are any changes to the terraform directory. We only want to run the following
+  # jobs if the configurations have changed. So if there were no changes then the workflow will
+  # complete after this job ends.
   check_changes:
     name: 'Check Changes'
     runs-on: ubuntu-latest
@@ -24,10 +25,11 @@ jobs:
           src:
             - 'iac/**'
 
+  # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
     name: "Set Environment"
     needs: check_changes
-    if: ${{ needs.check_changes.outputs.src == 'true' }}
+    if: ${{ needs.check_changes.outputs.src == 'true' }}    
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
