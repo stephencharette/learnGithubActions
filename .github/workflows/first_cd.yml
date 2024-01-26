@@ -32,6 +32,7 @@ jobs:
   set_environment:
     name: 'Set Environment'
     needs: check_changes
+    if: ${{ needs.check_changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
