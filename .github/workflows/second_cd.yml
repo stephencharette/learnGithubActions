@@ -21,6 +21,7 @@ jobs:
     steps:
       - run: echo 'The Apply workflow failed.'
   check_changes:
+    needs: success
     runs-on: ubuntu-latest
 
     steps:
@@ -37,7 +38,7 @@ jobs:
             exit 78  # Use a non-zero exit code to indicate a successful early exit
           fi
   set_environment:
-    needs: success
+    needs: check_changes
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
