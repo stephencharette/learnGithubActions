@@ -1,0 +1,19 @@
+name: 'Apply'
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  set_environment:
+    name: "Set Environment"
+    runs-on: ubuntu-latest
+    outputs:
+      my_env: ${{ steps.setenv.outputs.my_env }}
+    steps:
+      - id: setenv
+        run: |
+          if [ "${{github.ref_name}}" == "develop" ]; then 
+            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
+          fi

@@ -1,0 +1,18 @@
+name: 'Plan'
+
+on:
+  pull_request:
+    paths: 'iac/**'
+
+jobs:
+  set_environment:
+    name: "Set Environment"
+    runs-on: ubuntu-latest
+    outputs:
+      my_env: ${{ steps.setenv.outputs.my_env }}
+    steps:
+      - id: setenv
+        run: |
+          if [ "${{github.event.pull_request.base.ref }}" == "develop" ]; then 
+            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
+          fi

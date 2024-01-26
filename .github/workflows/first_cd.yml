@@ -1,0 +1,39 @@
+name: First Continuous Deployment
+
+on:
+  push:
+    branches: develop
+    paths:
+      - .github/**
+      - firstpath/**
+  
+  workflow_run:
+    workflows: [Apply]
+    types:
+      - completed
+
+concurrency:
+  group: deploy
+
+jobs:
+  success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo 'The Apply workflow completed successfully.'
+  failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The Apply workflow failed.'
+  set_environment:
+    needs: success
+    runs-on: ubuntu-latest
+    outputs:
+      my_env: ${{ steps.setenv.outputs.my_env }}
+    steps:
+      - id: setenv
+        run: |
+          if [ "${{github.ref_name}}" == "develop" ]; then 
+            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
+          fi
