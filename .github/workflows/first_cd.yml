@@ -1,12 +1,6 @@
 name: First Continuous Deployment
 
 on:
-  push:
-    branches: develop
-    paths:
-      - .github/**
-      - firstpath/**
-  
   workflow_run:
     workflows: [Apply]
     types:
