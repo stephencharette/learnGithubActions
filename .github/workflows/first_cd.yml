@@ -35,6 +35,7 @@ jobs:
   
   # Only run this workflow if files changed in the .github directory or respective project's directory.
   check_changes:
+    name: 'Check Changes'
     needs: terraform-success
     runs-on: ubuntu-latest
     outputs:
@@ -51,7 +52,7 @@ jobs:
   
   set_environment:
     name: 'Set Environment'
-    needs: terraform-success
+    needs: check_changes
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
