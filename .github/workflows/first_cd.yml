@@ -21,27 +21,18 @@ jobs:
     steps:
       - run: echo 'The Apply workflow failed.'
   check_changes:
-    needs: success
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Check for changes in specific directories
-        id: check_changes
-        run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^\.github/|^firstpath/'; then
-            echo "Changes detected in the specified directories."
-          else
-            echo "No changes detected in the specified directories. Exiting early."
-            exit 78
-          fi
-      - name: Set workflow status to success
-        if: always()
-        run: echo "::set-output name=status::success"
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          src:
+            - 'firstpath/**'
   set_environment:
     needs: check_changes
+    if: needs.check_changes.outputs.src == 'true'
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
