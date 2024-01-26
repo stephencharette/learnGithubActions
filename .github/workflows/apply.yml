@@ -17,3 +17,5 @@ jobs:
           if [ "${{github.ref_name}}" == "develop" ]; then 
             echo "my_env=Develop" >> "$GITHUB_OUTPUT";
           fi
+      - id: failure
+        run: exit 78
