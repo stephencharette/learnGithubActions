@@ -21,6 +21,7 @@ jobs:
     steps:
       - run: echo 'The Apply workflow failed.'
   check_changes:
+    needs: success
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
