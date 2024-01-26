@@ -37,7 +37,7 @@ jobs:
       with:
         filters: |
           src:
-            - 'firstpath/**'
+            - 'secondpath/**'
             - '.github/**'
   set_environment:
     needs: check_changes
