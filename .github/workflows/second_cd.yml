@@ -35,8 +35,12 @@ jobs:
             echo "Changes detected in the specified directories."
           else
             echo "No changes detected in the specified directories. Exiting early."
-            exit 0
+            exit 78
           fi
+          
+      - name: Set workflow status to success
+        if: always()
+        run: echo "::set-output name=status::success"
   set_environment:
     needs: check_changes
     runs-on: ubuntu-latest
