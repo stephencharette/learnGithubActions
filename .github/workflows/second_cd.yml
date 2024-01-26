@@ -20,6 +20,11 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - run: echo 'The Apply workflow failed.'
+  exit:
+    needs: failure
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
   check_changes:
     needs: success
     runs-on: ubuntu-latest
