@@ -1,32 +1,41 @@
 name: Second Continuous Deployment
 
+# Only run this workflow once the Terraform Apply workflow has completed.
 on:
   workflow_run:
-    workflows: [Apply]
+    workflows: [Terraform Apply]
     types:
       - completed
 
+# Only run one workflow at a time that has the `coordination-deploy` group.
 concurrency:
-  group: deploy
+  group: coordination-deploy
 
 jobs:
-  success:
+  # Check if the terraform configuration was applied successfully.
+  terraform-success:
+    name: 'Terraform Configuration Was Applied'
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - run: echo 'The Apply workflow completed successfully.'
-  failure:
+      - run: echo 'The terraform configuration was applied successfully.'
+  terraform-failure:
+    name: 'Terraform Configuration Was Not Applied'
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-      - run: echo 'The Apply workflow failed.'
+      - run: echo 'The terraform configuration could not be applied.'
+  
+  # Exit this workflow if the terraform configuration was applied successfully.
   exit:
-    needs: failure
+    needs: terraform-failure
     runs-on: ubuntu-latest
     steps:
       - run: exit 1
+  
+  # Only run this workflow if files changed in the .github directory or respective project's directory.
   check_changes:
-    needs: success
+    needs: terraform-success
     runs-on: ubuntu-latest
     outputs:
       src:
@@ -37,11 +46,12 @@ jobs:
       with:
         filters: |
           src:
-            - 'secondpath/**'
             - '.github/**'
+            - 'secondpath/**'
+  
   set_environment:
-    needs: check_changes
-    if: needs.check_changes.outputs.src == 'true'
+    name: 'Set Environment'
+    needs: terraform-success
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
