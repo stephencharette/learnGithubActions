@@ -11,7 +11,7 @@ jobs:
   # Check if there are any changes to the terraform directory. We only want to run the following
   # jobs if the configurations have changed. So if there were no changes then the workflow will
   # complete after this job ends.
-  check_changes:
+  changes:
     name: 'Check Changes'
     runs-on: ubuntu-latest
     permissions:
@@ -29,8 +29,8 @@ jobs:
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
     name: "Set Environment"
-    needs: check_changes
-    if: ${{ needs.check_changes.outputs.src == 'true' }}
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'src' }}
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
