@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v3
-      id: check_changes
+.      id: check_changes
       with:
         filters: |
           src:
