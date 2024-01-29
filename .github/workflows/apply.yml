@@ -15,6 +15,7 @@ jobs:
     name: 'Check Changes'
     runs-on: ubuntu-latest
     permissions:
+      pull-requests: read
       contents: read
     outputs:
       src: ${{ steps.filter.outputs.src }}
