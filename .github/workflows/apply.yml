@@ -12,33 +12,25 @@ jobs:
   # jobs if the configurations have changed. So if there were no changes then the workflow will
   # complete after this job ends.
   changes:
-    name: 'Check Changes'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
-      contents: read
     outputs:
-      src: ${{ steps.filter.outputs.src }}
+      src: ${{ steps.filter.src.backend }}
     steps:
-    - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v3
       with:
         filters: |
           src:
             - 'iac/**'
-  
-  print:
+          
+  # JOB to build and test backend code
+  set_environment:
     needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ needs.changes.outputs.src }}"
-
-  # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
-  set_environment:
-    name: "Set Environment"
-    needs: changes
-    if: ${{ needs.changes.outputs.src == 'src' }}
-    runs-on: ubuntu-latest
+      - uses: actions/checkout@v4
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
     steps:
