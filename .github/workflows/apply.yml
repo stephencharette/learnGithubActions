@@ -25,13 +25,6 @@ jobs:
           src:
             - 'iac/**'
 
-  # Make this workflow fail to test what the others do.
-  quit:
-    name: "Force Quit"
-    runs-on: ubuntu-latest
-    steps:
-      - run: quit 1
-
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
     name: "Set Environment"
