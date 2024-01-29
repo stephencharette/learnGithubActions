@@ -19,6 +19,7 @@ jobs:
       src: ${{ steps.filter.src.backend }}
     steps:
     - uses: dorny/paths-filter@v3
+      id: filter
       with:
         filters: |
           src:
@@ -29,8 +30,6 @@ jobs:
     needs: changes
     if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
     steps:
