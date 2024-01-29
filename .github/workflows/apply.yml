@@ -16,7 +16,7 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      src: ${{ steps.filter.src.backend }}
+      src: ${{ steps.filter.outputs.src }}
     steps:
     - uses: dorny/paths-filter@v3
       id: filter
