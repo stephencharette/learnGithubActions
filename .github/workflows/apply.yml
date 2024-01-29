@@ -25,6 +25,12 @@ jobs:
         filters: |
           src:
             - 'iac/**'
+  
+  print:
+    needs: changes
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ needs.changes.outputs.src }}"
 
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
