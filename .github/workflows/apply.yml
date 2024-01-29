@@ -24,7 +24,7 @@ jobs:
       with:
         filters: |
           src:
-            - 'iac/**'
+            - '../iac/**'
 
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
