@@ -1,32 +1,21 @@
 name: First Continuous Deployment
 
+# Only run this workflow once the Terraform Apply workflow has completed.
 on:
   workflow_run:
-    workflows: [Apply]
+    workflows: [Terraform Apply]
     types:
       - completed
 
+# Only run one workflow at a time that has the `coordination-deploy` group.
 concurrency:
-  group: deploy
+  group: coordination-deploy
 
 jobs:
-  success:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - run: echo 'The Apply workflow completed successfully.'
-  failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: echo 'The Apply workflow failed.'
-  exit:
-    needs: failure
-    runs-on: ubuntu-latest
-    steps:
-      - run: exit 1
+  # Only run the remaining jobs in this workflow if files changed in the .github directory or respective project's directory.
   check_changes:
-    needs: success
+    name: 'Check Changes'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     outputs:
       src:
@@ -37,11 +26,13 @@ jobs:
       with:
         filters: |
           src:
-            - 'firstpath/**'
             - '.github/**'
+            - 'firstpath/**'
+  
   set_environment:
+    name: 'Set Environment'
     needs: check_changes
-    if: needs.check_changes.outputs.src == 'true'
+    if: ${{ needs.check_changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       my_env: ${{ steps.setenv.outputs.my_env }}
