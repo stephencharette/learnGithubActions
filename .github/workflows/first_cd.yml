@@ -18,11 +18,11 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     outputs:
-      src:
+      src: ${{ steps.filter.outputs.src }}
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v3
-      id: changes
+      id: filter
       with:
         filters: |
           src:
