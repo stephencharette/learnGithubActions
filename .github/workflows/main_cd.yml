@@ -29,8 +29,8 @@ jobs:
           second:
             - 'secondpath/**'
 
-  infra_change:
-    name: 'Infrastructure Change'
+  infra_apply:
+    name: 'Infrastructure Apply'
     needs: [check_changes]
     if: ${{ needs.check_changes.outputs.infra == 'true' }}
     runs-on: ubuntu-latest
@@ -42,23 +42,23 @@ jobs:
         with:
           branch-name: ${{ github.ref_name }}
       - uses: actions/checkout@v4
-      - name: Infrastructure Change
+      - name: Infrastructure Apply
         uses: ./.github/actions/apply
         with:
           environment-name: ${{ steps.set_environment.outputs.my_env }}
   
-  post_infra_change:
-    name: 'Post Infrastructure Change'
-    needs: [check_changes, infra_change]
+  post_infra_apply:
+    name: 'Post Infrastructure Apply'
+    needs: [check_changes, infra_apply]
     if: |
       always() &&
-      needs.infra_change.result != 'failure'
+      needs.infra_apply.result != 'failure'
     runs-on: ubuntu-latest
     steps:
-    - name: Post Infrastructure Change
+    - name: Post Infrastructure Apply
       uses: peter-evans/repository-dispatch@v3
       with:
-        event-type: Post Infrastructure Change
+        event-type: Post Infrastructure Apply
         client-payload: |-
           {
             "github": {
