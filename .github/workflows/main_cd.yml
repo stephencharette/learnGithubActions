@@ -10,7 +10,7 @@ jobs:
     name: 'Check Changes'
     runs-on: ubuntu-latest
     outputs:
-      infra:    ${{ steps.filter.outputs.src }}
+      infra:    ${{ steps.filter.outputs.infra }}
       github:   ${{ steps.filter.outputs.github }}
       first:    ${{ steps.filter.outputs.first }}
       second:   ${{ steps.filter.outputs.second }}
