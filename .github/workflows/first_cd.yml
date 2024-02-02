@@ -29,12 +29,10 @@ jobs:
       src: ${{ steps.filter.outputs.src }}
     steps:
     - uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.workflow_run.head_branch }}
     - uses: dorny/paths-filter@v3
       id: filter
       with:
-        initial-fetch-depth: 1
+        ref: fix-cd-running
         filters: |
           src:
             - '.github/**'
