@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Print Workflow Information
         run: |
-          echo "github.event.workflow_run: ${{ github.event.workflow_run }}"
+          echo "github.event.workflow_run: ${{ toJson(github.event.workflow_run) }}"
           echo "Workflow Name: ${{ github.workflow }}"
           echo "Run ID: ${{ github.run_id }}"
           echo "Run Number: ${{ github.run_number }}"
