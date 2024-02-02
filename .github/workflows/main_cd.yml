@@ -39,6 +39,13 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           event-type: Infrastructure Change
+  
+  post_infra_change:
+    name: 'Post Infrastructure Change'
+    needs: [check_changes, infra_change]
+    if: ${{ always() && needs.infra_change.result != 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Post Infrastructure Change
         uses: peter-evans/repository-dispatch@v3
         with:
@@ -55,4 +62,3 @@ jobs:
                 "changed": "${{ needs.check_changes.outputs.second }}"
               }
             }
-    
