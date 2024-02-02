@@ -35,6 +35,7 @@ jobs:
     if: ${{ needs.check_changes.outputs.infra == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Set Environment
         id: set_environment
         uses: ./.github/actions/get_environment
