@@ -16,14 +16,31 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       src: ${{ steps.filter.outputs.src }}
+      first: ${{ steps.filter.outputs.first }}
+      second: ${{ steps.filter.outputs.second }}
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v3
       id: filter
       with:
         filters: |
+          first:
+            - 'firstpath/**'
+          second:
+            - 'secondpath/**'
           src:
             - 'iac/**'
+
+  dispatch_first:
+    name: 'Dispatch First'
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.first == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: dispatch-first
 
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
