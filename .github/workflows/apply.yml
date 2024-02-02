@@ -31,17 +31,6 @@ jobs:
           src:
             - 'iac/**'
 
-  dispatch_first:
-    name: 'Dispatch First'
-    needs: check_changes
-    if: ${{ needs.check_changes.outputs.first == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          event-type: First CD
-
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
     name: "Set Environment"
@@ -62,3 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo 'apply terraform'
+
+  dispatch_first:
+    name: 'Dispatch First'
+    needs: [check_changes, terraform_apply]
+    if: ${{ needs.terraform_apply.result == 'skipped' || needs.check_changes.outputs.first == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: First Continous Deployment
