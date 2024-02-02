@@ -1,7 +1,7 @@
 name: 'Terraform Apply'
 description: "test"
 inputs:
-  Environment:
+  environment-name:
     description: 'The environment to run apply.'
     required: true
 runs:
@@ -9,4 +9,5 @@ runs:
   steps:
     - name: "TEST"
       shell: bash
-      run: exit 1
+      # run: exit 1
+      run: "echo ${{ inputs.environment-name }}"

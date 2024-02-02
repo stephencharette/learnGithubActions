@@ -4,9 +4,6 @@ on:
   pull_request:
     paths: 'terraform/**'
 
-concurrency:
-  group: terraform
-
 jobs:
   set_environment:
     name: 'Set Environment'

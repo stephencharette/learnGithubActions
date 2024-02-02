@@ -35,15 +35,10 @@ jobs:
     if: ${{ needs.check_changes.outputs.infra == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Get Environment
-        uses: ./.github/actions/get_environment
-        id: get_environment
-        with:
-          Branch-Name: ${{ github.ref_name }}
       - name: Infrastructure Change
         uses: ./.github/actions/apply
         with:
-          environment: ${{ steps.get_environment.outputs.my_env }}
+          environment-name: ${{ github.ref_name }}
   
   post_infra_change:
     name: 'Post Infrastructure Change'
