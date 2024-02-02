@@ -28,11 +28,13 @@ jobs:
     outputs:
       src: ${{ steps.filter.outputs.src }}
     steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.workflow_run.head_branch }}
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v3
       id: filter
       with:
-        base: ${{ github.event.workflow_run.head_sha }}
         filters: |
           src:
             - '.github/**'
