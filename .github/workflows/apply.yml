@@ -26,4 +26,4 @@ jobs:
     needs: set_environment
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'terraform apply'
+      - run: exit 1
