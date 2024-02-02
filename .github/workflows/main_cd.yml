@@ -60,5 +60,5 @@ jobs:
               },
               "second": {
                 "changed": "${{ needs.check_changes.outputs.second }}"
-              },
+              }
             }
