@@ -50,7 +50,7 @@ jobs:
     needs: set_environment
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'apply terraform'
+      - run: exit 1
 
   dispatch_first:
     name: 'Dispatch First'
