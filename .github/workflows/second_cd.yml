@@ -1,45 +1,35 @@
 name: Second Continuous Deployment
 
-# Only run this workflow once the Terraform Apply workflow has completed.
 on:
-  workflow_run:
-    workflows: [Terraform Apply]
-    types:
-      - completed
+  repository_dispatch:
+    types: [Second Continuous Deployment]
 
-# Only run one workflow at a time that has the `coordination-deploy` group.
 concurrency:
   group: coordination-deploy
 
 jobs:
-  # Only run the remaining jobs in this workflow if files changed in the .github directory or respective project's directory.
-  check_changes:
-    name: 'Check Changes'
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-    outputs:
-      src: ${{ steps.filter.outputs.src }}
-    steps:
-    - uses: actions/checkout@v3
-    - uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        base: ${{ github.ref }}
-        filters: |
-          src:
-            - '.github/**'
-            - 'secondpath/**'
-  
   set_environment:
     name: 'Set Environment'
-    needs: check_changes
-    if: ${{ needs.check_changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     outputs:
-      my_env: ${{ steps.setenv.outputs.my_env }}
+      my_env: ${{ steps.get_environment.outputs.my_env }}
     steps:
-      - id: setenv
-        run: |
-          if [ "${{github.ref_name}}" == "develop" ]; then 
-            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
-          fi
+      - name: Get Environment
+        uses: ./.github/actions/build
+        id: get_environment
+        with:
+          Branch-Name: ${{ github.ref_name }}
+
+  build:
+    name: 'Build'
+    needs: set_environment
+    runs-on: windows-latest
+    environment: 
+      name: ${{ needs.set_environment.outputs.my_env }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: echo_environment
+      run: |
+        echo "The environment value is: ${{needs.set_environment.outputs.my_env}}"
+    - name: Run Composite Action Build
+      uses: ./.github/actions/build
