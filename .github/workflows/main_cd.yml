@@ -1,0 +1,64 @@
+name: 'Main Continuous Deployment'
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  check_changes:
+    name: 'Check Changes'
+    runs-on: ubuntu-latest
+    outputs:
+      infra:    ${{ steps.filter.outputs.src }}
+      github:   ${{ steps.filter.outputs.github }}
+      first:    ${{ steps.filter.outputs.first }}
+      second:   ${{ steps.filter.outputs.second }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          infra:
+            - 'terraform/**'
+          github:
+            - '.github/**'
+          first:
+            - '.firstpath/**'
+          second:
+            - '.secondpath/**'
+
+  infra_change:
+    name: 'Infrastructure Change'
+    needs: [check_changes]
+    if: ${{ needs.check_changes.outputs.infra == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Infrastructure Change
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: Infrastructure Change
+  
+  post_infra_change:
+    name: 'Post Infrastructure Change'
+    needs: [check_changes, infra_change]
+    if: ${{ always() && needs.infra_change.result != 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post Infrastructure Change
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: Post Infrastructure Change
+          client-payload: |-
+            {
+              "github": {
+                "changed": "${{ needs.check_changes.outputs.github }}"
+              },
+              "first": {
+                "changed": "${{ needs.check_changes.outputs.first }}"
+              },
+              "second": {
+                "changed": "${{ needs.check_changes.outputs.second }}"
+              },
+            }

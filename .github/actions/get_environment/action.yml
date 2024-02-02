@@ -1,0 +1,22 @@
+# For more information on composite actions: https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+
+name: 'Get Environment'
+description: 'Returns the environment name capitalized based on the branch name as input'
+inputs:
+  Branch-Name:
+    description: 'The branch name to input.'
+    required: true
+outputs:
+  my_env: 
+    description: 'The environment label or identifier capitalized'
+    value: ${{ steps.setenv.outputs.my_env }}
+runs:
+  using: 'composite'
+  steps:
+  - name: 'Get Environment From Input Branch'
+    shell: bash
+    id: setenv
+    run: |
+      if [ "${{ inputs.Branch-Name }}" == "develop" ]; then 
+        echo "my_env=Develop" >> "$GITHUB_OUTPUT";
+      fi

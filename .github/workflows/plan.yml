@@ -1,20 +1,29 @@
-# For more information on automating terraform with GitHub actions: https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
-
 name: 'Terraform Plan'
 
 on:
   pull_request:
-    paths: 'iac/**'
+    paths: 'terraform/**'
+
+concurrency:
+  group: terraform
 
 jobs:
   set_environment:
-    name: "Set Environment"
+    name: 'Set Environment'
     runs-on: ubuntu-latest
     outputs:
-      my_env: ${{ steps.setenv.outputs.my_env }}
+      my_env: ${{ steps.get_environment.outputs.my_env }}
     steps:
-      - id: setenv
-        run: |
-          if [ "${{github.event.pull_request.base.ref }}" == "develop" ]; then 
-            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
-          fi
+      - uses: actions/checkout@v4
+      - name: Get Environment
+        uses: ./.github/actions/get_environment
+        id: get_environment
+        with:
+          Branch-Name: ${{ github.event.pull_request.base.ref }}
+
+  terraform:
+    name: "Terraform Plan"
+    needs: set_environment
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'terraform plan'

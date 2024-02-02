@@ -1,23 +1,22 @@
 name: First Continuous Deployment
 
-# Only run this workflow once the Terraform Apply workflow has completed.
 on:
   repository_dispatch:
-    types: [First Continous Deployment]
+    types: [First Continuous Deployment]
 
-# Only run one workflow at a time that has the `coordination-deploy` group.
 concurrency:
   group: coordination-deploy
 
-jobs:
+jobs:  
   set_environment:
     name: 'Set Environment'
     runs-on: ubuntu-latest
     outputs:
-      my_env: ${{ steps.setenv.outputs.my_env }}
+      my_env: ${{ steps.get_environment.outputs.my_env }}
     steps:
-      - id: setenv
-        run: |
-          if [ "${{github.ref_name}}" == "develop" ]; then 
-            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
-          fi
+      - uses: actions/checkout@v4
+      - name: Get Environment
+        uses: ./.github/actions/get_environment
+        id: get_environment
+        with:
+          Branch-Name: ${{ github.ref_name }}

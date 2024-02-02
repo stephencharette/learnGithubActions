@@ -1,0 +1,32 @@
+name: Event Dispatcher
+
+on:
+  repository_dispatch:
+    types: [Post Infrastructure Change]
+
+jobs:
+  dispatch_first:
+    name: 'Dispatch First Deployment'
+    if: |
+      github.event.client_payload.first.changed  == 'true' ||
+      github.event.client_payload.github.changed    == 'true' ||
+      github.event.client_payload.common.changed    == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch First Continuous Deployment
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: First Continuous Deployment
+
+  dispatch_second:
+    name: 'Dispatch Second Deployment'
+    if: |
+      github.event.client_payload.second.changed     == 'true' ||
+      github.event.client_payload.github.changed    == 'true' ||
+      github.event.client_payload.common.changed    == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch First Continuous Deployment
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: Second Continuous Deployment

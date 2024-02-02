@@ -1,67 +1,29 @@
 name: 'Terraform Apply'
 
-# Always start workflow even if there are no changes to the terraform configurations for the environmnet
-# so other workflows can depend on this workflow completing before starting (Continuous Deployment).
 on:
-  push:
-    branches:
-      - develop
+  repository_dispatch:
+    types: [Infrastructure Change]
+
+concurrency:
+  group: terraform
 
 jobs:
-  # Check if there are any changes to the terraform directory. We only want to run the following
-  # jobs if the configurations have changed. So if there were no changes then the workflow will
-  # complete after this job ends.
-  check_changes:
-    name: 'Check Changes'
-    runs-on: ubuntu-latest
-    outputs:
-      src: ${{ steps.filter.outputs.src }}
-      first: ${{ steps.filter.outputs.first }}
-      second: ${{ steps.filter.outputs.second }}
-    steps:
-    - uses: actions/checkout@v3
-    - uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        filters: |
-          first:
-            - 'firstpath/**'
-          second:
-            - 'secondpath/**'
-          src:
-            - 'iac/**'
-
-  # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
-    name: "Set Environment"
-    needs: check_changes
-    if: ${{ needs.check_changes.outputs.src == 'true' }}    
+    name: 'Set Environment'
     runs-on: ubuntu-latest
     outputs:
-      my_env: ${{ steps.setenv.outputs.my_env }}
+      my_env: ${{ steps.get_environment.outputs.my_env }}
     steps:
-      - id: setenv
-        run: |
-          if [ "${{github.ref_name}}" == "develop" ]; then 
-            echo "my_env=Develop" >> "$GITHUB_OUTPUT";
-          fi
+      - uses: actions/checkout@v4
+      - name: Get Environment
+        uses: ./.github/actions/get_environment
+        id: get_environment
+        with:
+          Branch-Name: ${{ github.ref_name }}
+
   terraform_apply:
-    name: 'Terraform Apply'
+    name: "Terraform Apply"
     needs: set_environment
     runs-on: ubuntu-latest
     steps:
-      - run: exit 1
-
-  dispatch_first:
-    name: 'Dispatch First'
-    needs: [check_changes, terraform_apply]
-    if: |
-      always() && 
-      needs.check_changes.outputs.first == 'true' &&
-      needs.terraform_apply.result != 'failure'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          event-type: First Continous Deployment
+      - run: echo 'terraform apply'
