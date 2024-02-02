@@ -25,9 +25,9 @@ jobs:
           github:
             - '.github/**'
           first:
-            - '.firstpath/**'
+            - 'firstpath/**'
           second:
-            - '.secondpath/**'
+            - 'secondpath/**'
 
   infra_change:
     name: 'Infrastructure Change'
