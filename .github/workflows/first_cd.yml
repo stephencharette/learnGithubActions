@@ -3,7 +3,7 @@ name: First Continuous Deployment
 # Only run this workflow once the Terraform Apply workflow has completed.
 on:
   repository_dispatch:
-    types: [First CD]
+    types: [First Continous Deployment]
 
 # Only run one workflow at a time that has the `coordination-deploy` group.
 concurrency:

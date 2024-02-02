@@ -56,8 +56,9 @@ jobs:
     name: 'Dispatch First'
     needs: [check_changes, terraform_apply]
     if: |
-      always() &&
-      (needs.terraform_apply.result == 'skipped' || needs.check_changes.outputs.first == 'true')
+      always() && 
+      needs.check_changes.outputs.first == 'true' &&
+      needs.terraform_apply.result != 'failure'
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
