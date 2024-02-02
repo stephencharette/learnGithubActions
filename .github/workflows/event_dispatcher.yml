@@ -12,9 +12,11 @@ jobs:
   dispatch_first:
     name: 'Dispatch First Deployment'
     if: |
-      github.event.client_payload.post_infra_apply.first.changed  == 'true' ||
-      github.event.client_payload.post_infra_apply.github.changed    == 'true' ||
-      github.event.client_payload.post_infra_apply.common.changed    == 'true'
+      github.event.action == 'Post Infrastructure Apply' && (
+        github.event.client_payload.first.changed  == 'true' ||
+        github.event.client_payload.github.changed    == 'true' ||
+        github.event.client_payload.common.changed    == 'true'
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch First Continuous Deployment
@@ -25,9 +27,11 @@ jobs:
   dispatch_second:
     name: 'Dispatch Second Deployment'
     if: |
-      github.event.client_payload.post_infra_apply.second.changed     == 'true' ||
-      github.event.client_payload.post_infra_apply.github.changed    == 'true' ||
-      github.event.client_payload.post_infra_apply.common.changed    == 'true'
+      github.event.action == 'Post Infrastructure Apply' && (
+        github.event.client_payload.second.changed    == 'true' ||
+        github.event.client_payload.github.changed    == 'true' ||
+        github.event.client_payload.common.changed    == 'true'
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch First Continuous Deployment
