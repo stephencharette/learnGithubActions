@@ -42,7 +42,7 @@ jobs:
     - uses: dorny/paths-filter@v3
       id: filter
       with:
-        base: develop
+        base: 7c85a33cb7b54c2cf7587a3563badeffe796b9e1
         filters: |
           src:
             - '.github/**'
