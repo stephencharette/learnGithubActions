@@ -48,7 +48,9 @@ jobs:
   post_infra_change:
     name: 'Post Infrastructure Change'
     needs: [check_changes, infra_change]
-    if: ${{ needs.infra_change.result != 'failure' }}
+    if: |
+      always() &&
+      needs.infra_change.result != 'failure'
     runs-on: ubuntu-latest
     steps:
     - name: Post Infrastructure Change
