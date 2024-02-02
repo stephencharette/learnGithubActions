@@ -44,19 +44,26 @@ jobs:
         uses: ./.github/actions/apply
         with:
           environment: ${{ steps.get_environment.outputs.my_env }}
-      - name: Post Infrastructure Change
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          event-type: Post Infrastructure Change
-          client-payload: |-
-            {
-              "github": {
-                "changed": "${{ needs.check_changes.outputs.github }}"
-              },
-              "first": {
-                "changed": "${{ needs.check_changes.outputs.first }}"
-              },
-              "second": {
-                "changed": "${{ needs.check_changes.outputs.second }}"
-              }
+  
+  post_infra_change:
+    name: 'Post Infrastructure Change'
+    needs: [check_changes, infra_change]
+    if: ${{ needs.infra_change.result != 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Post Infrastructure Change
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        event-type: Post Infrastructure Change
+        client-payload: |-
+          {
+            "github": {
+              "changed": "${{ needs.check_changes.outputs.github }}"
+            },
+            "first": {
+              "changed": "${{ needs.check_changes.outputs.first }}"
+            },
+            "second": {
+              "changed": "${{ needs.check_changes.outputs.second }}"
             }
+          }
