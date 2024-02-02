@@ -15,21 +15,7 @@ jobs:
       my_env: ${{ steps.get_environment.outputs.my_env }}
     steps:
       - name: Get Environment
-        uses: ./.github/actions/build
+        uses: ./.github/actions/get_environment
         id: get_environment
         with:
           Branch-Name: ${{ github.ref_name }}
-
-  build:
-    name: 'Build'
-    needs: set_environment
-    runs-on: windows-latest
-    environment: 
-      name: ${{ needs.set_environment.outputs.my_env }}
-    steps:
-    - uses: actions/checkout@v4
-    - name: echo_environment
-      run: |
-        echo "The environment value is: ${{needs.set_environment.outputs.my_env}}"
-    - name: Run Composite Action Build
-      uses: ./.github/actions/build

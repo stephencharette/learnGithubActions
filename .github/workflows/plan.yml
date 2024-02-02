@@ -15,7 +15,7 @@ jobs:
       my_env: ${{ steps.get_environment.outputs.my_env }}
     steps:
       - name: Get Environment
-        uses: ./.github/actions/build
+        uses: ./.github/actions/get_environment
         id: get_environment
         with:
           Branch-Name: ${{ github.event.pull_request.base.ref }}
