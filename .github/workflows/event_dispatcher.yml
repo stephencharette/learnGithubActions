@@ -2,15 +2,19 @@ name: Event Dispatcher
 
 on:
   repository_dispatch:
-    types: [Post Infrastructure Change]
+    types: [Post Infrastructure Apply]
 
 jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo ${{ toJSON(github) }}"
   dispatch_first:
     name: 'Dispatch First Deployment'
     if: |
-      github.event.client_payload.first.changed  == 'true' ||
-      github.event.client_payload.github.changed    == 'true' ||
-      github.event.client_payload.common.changed    == 'true'
+      github.event.client_payload.post_infra_apply.first.changed  == 'true' ||
+      github.event.client_payload.post_infra_apply.github.changed    == 'true' ||
+      github.event.client_payload.post_infra_apply.common.changed    == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch First Continuous Deployment
@@ -21,9 +25,9 @@ jobs:
   dispatch_second:
     name: 'Dispatch Second Deployment'
     if: |
-      github.event.client_payload.second.changed     == 'true' ||
-      github.event.client_payload.github.changed    == 'true' ||
-      github.event.client_payload.common.changed    == 'true'
+      github.event.client_payload.post_infra_apply.second.changed     == 'true' ||
+      github.event.client_payload.post_infra_apply.github.changed    == 'true' ||
+      github.event.client_payload.post_infra_apply.common.changed    == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch First Continuous Deployment
