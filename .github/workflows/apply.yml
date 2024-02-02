@@ -40,7 +40,7 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v3
         with:
-          event-type: dispatch-first
+          event-type: First CD
 
   # Set Environment will only run if the Check Changes job detected changes in the terraform configs.
   set_environment:
