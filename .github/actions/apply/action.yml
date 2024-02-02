@@ -1,0 +1,12 @@
+name: 'Terraform Apply'
+description: "test"
+inputs:
+  Environment:
+    description: 'The environment to run apply.'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: "TEST"
+      shell: bash
+      run: exit 1
