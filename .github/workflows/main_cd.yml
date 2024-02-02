@@ -35,17 +35,15 @@ jobs:
     if: ${{ needs.check_changes.outputs.infra == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Infrastructure Change
-        uses: peter-evans/repository-dispatch@v3
+      - name: Get Environment
+        uses: ./.github/actions/get_environment
+        id: get_environment
         with:
-          event-type: Infrastructure Change
-  
-  post_infra_change:
-    name: 'Post Infrastructure Change'
-    needs: [check_changes, infra_change]
-    if: ${{ always() && needs.infra_change.result != 'failure' }}
-    runs-on: ubuntu-latest
-    steps:
+          Branch-Name: ${{ github.ref_name }}
+      - name: Infrastructure Change
+        uses: ./.github/actions/apply
+        with:
+          environment: ${{ steps.get_environment.outputs.my_env }}
       - name: Post Infrastructure Change
         uses: peter-evans/repository-dispatch@v3
         with:
